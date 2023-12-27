@@ -1,0 +1,9 @@
+openapi: 3.0.3
+info:
+  title: FreeAPI
+  description: >-
+    Backend app for Doc-sync app
+  version: 1.0.0
+  contact: {}
+servers:
+  - url: 'http://localhost:8080/api/v1'
