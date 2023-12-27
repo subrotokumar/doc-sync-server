@@ -17,19 +17,31 @@ type loginRequestBody = {
     password: string
 }
 
-const generateAccessAndRefreshToken = async (userId: string){
+/**
+ * Generates new access and refresh tokens for the user with the given ID.
+ * 
+ * Looks up the user by ID, generates new JWT access and refresh tokens for them, 
+ * saves the refresh token to the user document, and returns the tokens.
+ * 
+ * Throws ApiError if user lookup fails or token generation fails.
+ */
+const generateAccessAndRefreshToken = async (userId: string) => {
     try {
-        const user = await User.findById(userId)
+        const user = await User.findById(userId);
         if (!user)
-            throw new ApiError(500, "Something went wrong while generating refresh and access token")
-        const accessToken = user!.generateAccessToken();
-        const refreshToken = user!.generateRefreshToken();
-        user?.refresh
-    } catch (e) {
-        throw new ApiError(500, "Something went wrong while generating refresh and access token")
-    }
+            throw new ApiError(500, "Something went wrong while generating refresh and access token");
 
+        const accessToken = await user.generateAccessToken();
+        const refreshToken = await user.generateRefreshToken();
+
+        user.refresh = refreshToken;
+        await user.save();
+
+    } catch (e) {
+        throw new ApiError(500, "Something went wrong while generating refresh and access token");
+    }
 }
+
 
 export const registerUser = asyncHandler(async (req: Request, res: Response) => {
     // get user details from frontend
