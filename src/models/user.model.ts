@@ -34,7 +34,8 @@ const userSchema = new Schema<IUser, UserModel, IUserModels>({
     },
     avatar: {
         type: String,
-        required: true,
+        required: false,
+        default: "https://via.placeholder.com/100x100.png"
     },
     refresh: {
         type: String,
@@ -55,7 +56,7 @@ userSchema.pre("save", async function (next) {
     next()
 })
 
-userSchema.method('isPassword', async function (password: string) {
+userSchema.method('isPasswordCorrect', async function (password: string) {
     return await bcrypt.compare(password, this.password)
 })
 

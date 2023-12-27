@@ -1,10 +1,41 @@
 import { Request, Response, NextFunction } from "express"
+import { ApiError } from "./ApiError"
 
 const asyncHandler = (requestHandler: CallableFunction) => {
     return (req: Request, res: Response, next: NextFunction) => {
         Promise.resolve(requestHandler(req, res, next))
-            .catch((err) => next(err))
+            .catch((error) => {
+                if (typeof error === 'string') {
+                    res.status(500).json({
+                        success: false,
+                        message: error
+                    })
+                } else if (error instanceof ApiError) {
+                    res.status(error.statusCode).json({
+                        success: false,
+                        message: error.message
+                    })
+                }
+            })
     }
 }
+
+// const asyncHandler = (fn: CallableFunction) => async (req: Response, res: Response, next: NextFunction) => {
+//     try {
+//         await fn(req, res, next)
+//     } catch (error) {
+//         if (typeof error === 'string') {
+//             res.status(500).json({
+//                 success: false,
+//                 message: error
+//             })
+//         } else if (error instanceof ApiError) {
+//             res.status(error.statusCode).json({
+//                 success: false,
+//                 message: error.message
+//             })
+//         }
+//     }
+// }
 
 export { asyncHandler }

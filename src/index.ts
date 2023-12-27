@@ -2,6 +2,7 @@ import { config } from "dotenv";
 import { httpServer } from "./app";
 import connectDB from "./db";
 config()
+
 const startServer = () => {
     httpServer.listen(process.env.PORT || 8080, () => {
         console.info(
