@@ -17,7 +17,8 @@ export const authMiddleware = asyncHandler(
             }
 
             const decordedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!, (err: any, user: any) => {
-                if (err) return new ApiError(401, "Invalid Access token")
+                if (err) throw new ApiError(401, "Invalid Access token")
+                return user
             })
             //@ts-ignore
             const user = await User.findById(decordedToken._id).select("-password -refresh")

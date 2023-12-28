@@ -147,13 +147,16 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
 export const refreshToken = asyncHandler(async (req: Request, res: Response) => {
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refresh
+    console.log(incomingRefreshToken);
     if (!incomingRefreshToken) {
         throw new ApiError(401, "Unauthorized Request")
     }
 
-    const decordedToken = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET!, (err: any, user: any) => {
-        if (err) return new ApiError(401, "Invalid refresh token")
+    const decordedToken = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET!, (err: any, data: any) => {
+        if (err) throw new ApiError(401, "Invalid refresh token")
+        return data;
     })
+    console.log(decordedToken)
 
     //@ts-ignore
     const user = await User.findById(decordedToken?._id)

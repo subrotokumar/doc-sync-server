@@ -7,11 +7,13 @@ const asyncHandler = (requestHandler: CallableFunction) => {
             .catch((error) => {
                 if (typeof error === 'string') {
                     res.status(500).json({
+                        statusCode: 500,
                         success: false,
                         message: error
                     })
                 } else if (error instanceof ApiError) {
                     res.status(error.statusCode).json({
+                        statusCode: error.statusCode,
                         success: false,
                         message: error.message
                     })

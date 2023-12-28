@@ -3,6 +3,7 @@ class ApiError extends Error {
     message: string
     errors: Array<any>
     stack: string
+    success: boolean
 
     constructor(
         statusCode: number,
@@ -11,6 +12,7 @@ class ApiError extends Error {
         stack?: string
     ) {
         super(message)
+        this.success = false
         this.statusCode = statusCode;
         this.message = message;
         this.errors = error;
