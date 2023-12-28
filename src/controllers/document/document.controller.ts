@@ -18,7 +18,7 @@ export const createDocument = asyncHandler(async (req: AuthorizedRequest, res: R
 })
 
 export const getDocumentList = asyncHandler(async (req: AuthorizedRequest, res: Response) => {
-    let documentList = await Document.find({ createdBy: req.user._id })
-    res.json(new ApiResponse(200, documentList, "Retrieved all the document created by you"))
+    let documentList = await Document.find({ createdBy: req.user._id }).select("-content")
+    res.json(new ApiResponse(200, { docs: documentList }, "Retrieved all the document created by you"))
 })
 

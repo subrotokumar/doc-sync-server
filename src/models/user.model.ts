@@ -34,7 +34,6 @@ const userSchema = new Schema<IUser, UserModel, IUserModels>({
     avatar: {
         type: String,
         required: false,
-        default: "https://via.placeholder.com/100x100.png"
     },
     refresh: {
         type: String,
@@ -50,8 +49,13 @@ const userSchema = new Schema<IUser, UserModel, IUserModels>({
 })
 
 userSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) return next()
-    this.password = await bcrypt.hash(this.password, 10)
+    if (this.isModified("password")) {
+        this.password = await bcrypt.hash(this.password, 10)
+    }
+    if (!this.avatar) {
+        this.avatar = `https://api.multiavatar.com/${this.username}.png`
+    }
+
     next()
 })
 
