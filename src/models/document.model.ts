@@ -1,17 +1,24 @@
-import { Schema, model } from "mongoose";
+import { Model, Schema, model } from "mongoose";
 
-const documentSchema = new Schema({
-    uid: {
-        required: true,
-        type: String,
-    },
+interface IDocument {
+    createdBy: Schema.Types.ObjectId;
+    title: string;
+    content: Array<any>;
+}
+
+interface IDocumentModels {
+}
+
+type DocumentModel = Model<IDocument, {}, IDocumentModels>
+
+const documentSchema = new Schema<IDocument, DocumentModel, IDocumentModels>({
     title: {
         required: true,
         type: String,
         trim: true,
     },
     content: {
-        type: Array,
+        type: [],
         default: [],
     },
     createdBy: {
@@ -19,10 +26,11 @@ const documentSchema = new Schema({
         ref: 'User',
     }
 }, {
-    collection: 'Documents',
+
+    collection: 'documents',
     timestamps: true
 })
 
 const Document = model("Document", documentSchema);
 
-module.exports = Document;
+export { Document }

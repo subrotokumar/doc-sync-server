@@ -29,8 +29,11 @@ import healthCheckRoutes from './routes/health.route'
 app.use("/api/v1/", healthCheckRoutes)
 
 
-import userRoutes from './routes/user/user.routes'
-app.use("/api/v1/user", userRoutes)
+import userRouter from './routes/user/user.routes'
+app.use("/api/v1/user", userRouter)
+
+import documentRouter from './routes/document/document.routes'
+app.use("/api/v1/document", documentRouter)
 
 app.use(
     "/docs",

@@ -1,7 +1,6 @@
 import { Model, Schema, model } from "mongoose";
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
-import { Token } from "yaml/dist/parse/cst";
 
 interface IUser {
     username: string;

@@ -79,7 +79,7 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
     })
 
     const createdUser = await User.findById(user._id).select(
-        "-password -refreshToken -__v"
+        "-password -refresh -__v"
     )
 
     if (!createdUser) {
@@ -147,7 +147,6 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
 export const refreshToken = asyncHandler(async (req: Request, res: Response) => {
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refresh
-    console.log(incomingRefreshToken);
     if (!incomingRefreshToken) {
         throw new ApiError(401, "Unauthorized Request")
     }
@@ -156,7 +155,6 @@ export const refreshToken = asyncHandler(async (req: Request, res: Response) => 
         if (err) throw new ApiError(401, "Invalid refresh token")
         return data;
     })
-    console.log(decordedToken)
 
     //@ts-ignore
     const user = await User.findById(decordedToken?._id)
@@ -200,5 +198,17 @@ export const logoutUser = asyncHandler(async (req: AuthorizedRequest, res: Respo
         .status(200)
         .clearCookie("accessToken", option)
         .clearCookie("refreshToken", option)
-        .json(new ApiResponse(200, {}, "User successfully logged out"))
+        .json(new ApiResponse(200, "logout success", "User successfully logged out"))
+})
+
+
+export const userData = asyncHandler(async (req: AuthorizedRequest, res: Response) => {
+    const userId = req.user._id;
+    const userData = await User.findById(userId).select("-password -refresh -__v")
+    if (!userData) {
+        throw new ApiError(404, "No user found")
+    }
+    return res
+        .status(200)
+        .json(new ApiResponse(200, userData, "User successfully logged out"))
 })
