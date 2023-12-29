@@ -36,3 +36,19 @@ export const getDocumentById = asyncHandler(async (req: AuthorizedRequest, res: 
 
     res.status(200).json(new ApiResponse(200, document, "Success"))
 })
+
+
+export const deleteDocumentById = asyncHandler(async (req: AuthorizedRequest, res: Response) => {
+    const { id } = req.params;
+    let document = await Document.deleteOne(
+        {
+            createdBy: req.user._id,
+            _id: id
+        },
+    );
+    if (!document) {
+        throw new ApiError(401, "No such document found")
+    }
+
+    res.status(200).json(new ApiResponse(200, "Document deleted successfull", "Success"))
+})

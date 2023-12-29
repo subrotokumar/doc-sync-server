@@ -6,14 +6,14 @@ import { User } from "../../models/user.model";
 import { AuthorizedRequest } from "../../middlewares/auth.middleware";
 import jwt from "jsonwebtoken"
 
-type RegisterRequestBody = {
+export type RegisterRequestBody = {
     username: string
     avatar: string
     email: string
     password: string
 }
 
-type loginRequestBody = {
+export type loginRequestBody = {
     username?: string
     email?: string
     password: string

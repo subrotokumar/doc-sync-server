@@ -31,6 +31,15 @@ const documentSchema = new Schema<IDocument, DocumentModel, IDocumentModels>({
     timestamps: true
 })
 
+
+documentSchema.pre("save", async function (next) {
+    if (this.isModified("title")) {
+        this.title = this.title.toString().replace(" ", "_");
+    }
+
+    next()
+})
+
 const Document = model("Document", documentSchema);
 
 export { Document }

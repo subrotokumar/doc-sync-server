@@ -29,7 +29,7 @@ The doc-sync backend is built with:
 
 **Prerequisites:** 
 - Node.js
-- MongoDB instance
+- Docker
 
 
 Installation
