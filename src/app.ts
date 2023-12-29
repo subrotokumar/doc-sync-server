@@ -35,6 +35,9 @@ app.use("/api/v1/user", userRouter)
 import documentRouter from './routes/document/document.routes'
 app.use("/api/v1/document", documentRouter)
 
+import docsRouter from './routes/docs/docs.routes'
+app.use("/api/v1/docs", docsRouter)
+
 app.use(
     "/docs",
     swaggerUi.serve,
