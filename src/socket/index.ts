@@ -1,6 +1,7 @@
 
 import { Request } from "express";
 import { Server, Socket } from "socket.io";
+import { Document } from "../models/document.model";
 
 const joinEvent = (socket: Socket) => {
     socket.on('join', (documentId: string) => {
@@ -14,11 +15,27 @@ const typingEvent = (socket: Socket) => {
     })
 }
 
+const saveEvent = (socket: Socket) => {
+    socket.on("save", (data) => {
+        saveData(data);
+    });
+}
+
+const saveData = async (data: any) => {
+    try {
+        let document = await Document.findById(data.room);
+        if (!document) return;
+        document.content = data.delta;
+        document = await document.save();
+    } catch (_) { }
+}
+
 const initializeSocketIO = (io: Server) => {
     return io.on("connection", async (socket: Socket) => {
         try {
             joinEvent(socket)
             typingEvent(socket)
+            saveEvent(socket)
         } catch (error) {
             if (error instanceof Error) {
                 socket.emit(
