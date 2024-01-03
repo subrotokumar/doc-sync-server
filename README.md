@@ -6,7 +6,7 @@ This is the backend server for Doc-sync, a real-time collaborative cross-platfro
 ### Overview
 The doc-sync backend is built with:
 
-![](https://skillicons.dev/icons?i=nodejs,typescript,express,mongodb,prometheus,grafana&theme=light)
+![](https://skillicons.dev/icons?i=nodejs,typescript,express,mongodb,prometheus,grafana,docker&theme=light)
 
 - Nodejs
 - TypeScript
@@ -57,15 +57,15 @@ API documentation can be found at API_DOCS.md
 ### Architecture
 `src/index.ts` - The entry point to our application. This file defines our express server and connects it to MongoDB using mongoose.
 
-`routes/` - This folder contains the route definitions for our API.
+`src/routes/` - This folder contains the route definitions for our API.
 
-`controllers/` - This folder contains the controller implementations for our API routes.
+`src/controllers/` - This folder contains the controller implementations for our API routes.
 
-`models/` - This folder contains the MongoDB/Mongoose models for our application data.
+`src/models/` - This folder contains the MongoDB/Mongoose models for our application data.
 
-`middlewares/` - This folder contains custom express middlewares used by the app.
+`src/middlewares/` - This folder contains custom express middlewares used by the app.
 
-`sockets/` - This folder contains the socket.io logic for realtime communication.
+`src/socket/` - This folder contains the socket.io logic for realtime communication.
 
 ### Contributing
 Contributions are welcome! Please check out the Contributing Guide.
