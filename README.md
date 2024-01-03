@@ -1,4 +1,5 @@
 # DocSync  
+[![](./public/docsync.png)](https://www.github.com/subrotokumar/doc-sync)
 **Realtime Collaborative Document Editor** 
 
 This is the backend server for Doc-sync, a real-time collaborative cross-platfrom document editor app for Android, IOS and Web.

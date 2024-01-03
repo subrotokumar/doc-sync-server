@@ -23,11 +23,16 @@ const saveEvent = (socket: Socket) => {
 
 const saveData = async (data: any) => {
     try {
+        console.log("saving");
         let document = await Document.findById(data.room);
+        console.log(document)
         if (!document) return;
         document.content = data.delta;
         document = await document.save();
-    } catch (_) { }
+    } catch (e) {
+        //@ts-ignore
+        console.log(e.message)
+    }
 }
 
 const initializeSocketIO = (io: Server) => {
