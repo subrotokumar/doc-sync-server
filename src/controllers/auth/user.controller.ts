@@ -5,6 +5,8 @@ import { ApiError } from "../../utils/ApiError";
 import { User } from "../../models/user.model";
 import { AuthorizedRequest } from "../../middlewares/auth.middleware";
 import jwt from "jsonwebtoken"
+import { getObjectURL, putObjectUrl } from "../storage/s3.controller";
+import { contentType } from "prom-client";
 
 export type RegisterRequestBody = {
     username: string
@@ -19,14 +21,6 @@ export type loginRequestBody = {
     password: string
 }
 
-/**
- * Generates new access and refresh tokens for the user with the given ID.
- * 
- * Looks up the user by ID, generates new JWT access and refresh tokens for them, 
- * saves the refresh token to the user document, and returns the tokens.
- * 
- * Throws ApiError if user lookup fails or token generation fails.
- */
 const generateAccessAndRefreshToken = async (userId: string) => {
     try {
         const user = await User.findById(userId);
@@ -208,6 +202,39 @@ export const userData = asyncHandler(async (req: AuthorizedRequest, res: Respons
     if (!userData) {
         throw new ApiError(404, "No user found")
     }
+    return res
+        .status(200)
+        .json(new ApiResponse(200, userData, "User successfully logged out"))
+})
+
+
+export const profileUpdateUrl = asyncHandler(async (req: AuthorizedRequest, res: Response) => {
+    const userId = req.user._id;
+    const { filename, contentType: string } = req.body;
+    if (!contentType.includes("image")) {
+        throw new ApiError(404, "Only Image file are allow")
+    }
+    const userData = await User.findById(userId).select("-password -refresh -__v")
+    if (!userData) {
+        throw new ApiError(404, "No user found")
+    }
+    const key = `Profile/${userId}/${filename}`;
+    const signedUploadURl = await putObjectUrl(key, contentType)
+    return res
+        .status(200)
+        .json(new ApiResponse(200, { url: signedUploadURl, key, contentType }, "User successfully logged out"))
+})
+
+export const changeProfile = asyncHandler(async (req: AuthorizedRequest, res: Response) => {
+    const userId = req.user._id;
+    const { key } = req.body;
+    let userData = await User.findById(userId).select("-password -refresh -__v")
+    if (!userData) {
+        throw new ApiError(404, "No user found")
+    }
+    const newAvatarUrl = await getObjectURL(key);
+    userData.avatar = newAvatarUrl
+    await userData.save();
     return res
         .status(200)
         .json(new ApiResponse(200, userData, "User successfully logged out"))

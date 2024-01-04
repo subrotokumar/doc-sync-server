@@ -7,7 +7,7 @@ This is the backend server for Doc-sync, a real-time collaborative cross-platfro
 ### Overview
 The doc-sync backend is built with:
 
-![](https://skillicons.dev/icons?i=nodejs,typescript,express,mongodb,prometheus,grafana,docker&theme=light)
+![](https://skillicons.dev/icons?i=nodejs,typescript,express,mongodb,prometheus,grafana,docker,aws&theme=light)
 
 - Nodejs
 - TypeScript
@@ -16,6 +16,7 @@ The doc-sync backend is built with:
 - Socket.IO - realtime communication
 - Prometheus
 - Grafana
+- AWS S3
 
 ### Key features:
 
