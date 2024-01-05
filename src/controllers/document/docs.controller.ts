@@ -6,13 +6,17 @@ import { ApiError } from "../../utils/ApiError";
 import { Response } from "express";
 
 export const updateDocumentTitle = asyncHandler(async (req: AuthorizedRequest, res: Response) => {
-    const { id, title } = req.body;
+    const { documentId, title } = req.body;
+    if (!documentId || !title) {
+        throw new ApiError(400, "Bad request")
+    }
     let document = await Document.findOneAndUpdate(
         {
             createdBy: req.user._id,
-            _id: id
+            _id: documentId
         },
-        { title }
+        { $set: { title } },
+        { new: true }
     );
     if (!document) {
         throw new ApiError(401, "No such document found")

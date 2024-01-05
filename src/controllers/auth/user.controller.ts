@@ -210,7 +210,7 @@ export const userData = asyncHandler(async (req: AuthorizedRequest, res: Respons
 
 export const profileUpdateUrl = asyncHandler(async (req: AuthorizedRequest, res: Response) => {
     const userId = req.user._id;
-    const { filename, contentType: string } = req.body;
+    const { filename, contentType } = req.body;
     if (!contentType.includes("image")) {
         throw new ApiError(404, "Only Image file are allow")
     }

@@ -13,7 +13,7 @@ router.route("/refresh").post(refreshToken)
 
 // SECURE ROUTES
 router.route("/info").get(authMiddleware, userData)
-router.route("/profile-upload-url").get(authMiddleware, profileUpdateUrl);
+router.route("/profile-upload-url").post(authMiddleware, profileUpdateUrl);
 router.route("/change-profile").get(authMiddleware, changeProfile);
 router.route("/logout").post(authMiddleware, logoutUser)
 

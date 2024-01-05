@@ -5,8 +5,9 @@ import { AuthorizedRequest } from "../../middlewares/auth.middleware";
 import { ApiResponse } from "../../utils/ApiResponse";
 
 export const createDocument = asyncHandler(async (req: AuthorizedRequest, res: Response) => {
+    const { title } = req.body;
     let document = new Document({
-        title: "Untitled Document",
+        title: title || "Untitled Document",
         createdBy: req.user._id,
     });
 

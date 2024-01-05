@@ -1,94 +1,777 @@
-openapi: 3.0.3
+openapi: 3.0.0
 info:
-  title: FreeAPI
-  description: >-
-    Backend app for Doc-sync app
+  title: Doc-sync API Documentation
   version: 1.0.0
-  contact: {}
 servers:
-  - url: 'http://localhost:3031/api/v1'
-
+  - url: http://localhost:3001/api/v1
+tags:
+  - name: Auth
+  - name: Document
+  - name: Docs
+  - name: Health
 paths:
-
-  /health:
-      get:
-        summary: ⛑️ healthcheck
-        description: >-
-          This API endpoint is commonly used to determine the health status or
-          availability of a system or service.
-
-
-          It is a simple and lightweight endpoint designed to perform a quick
-          health check of the application or infrastructure.
-        operationId: healthcheck
-        responses:
-          '200':
-            description: healthcheck
-            headers:
-              Access-Control-Allow-Credentials:
-                schema:
-                  type: string
-                  example: 'true'
-              Access-Control-Allow-Origin:
-                schema:
-                  type: string
-                  example: '*'
-              Connection:
-                schema:
-                  type: string
-                  example: keep-alive
-              Content-Length:
-                schema:
-                  type: string
-                  example: '77'
-              Date:
-                schema:
-                  type: string
-                  example: Thu, 01 Jun 2023 05:43:54 GMT
-              ETag:
-                schema:
-                  type: string
-                  example: W/"4d-HsIML77lP0nFnY+in7vJJjHcLbQ"
-              Keep-Alive:
-                schema:
-                  type: string
-                  example: timeout=5
-              X-Powered-By:
-                schema:
-                  type: string
-                  example: Express
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    data:
-                      type: string
-                      example: OK
-                    message:
-                      type: string
-                      example: Health check passed
-                    statusCode:
-                      type: number
-                      example: 200
-                    success:
-                      type: boolean
-                      example: true
-                examples:
-                  healthcheck:
-                    value:
-                      data: OK
-                      message: Health check passed
-                      statusCode: 200
-                      success: true
-                      
-  /auth/register:
+  /user/register:
     post:
-      tag:
-        - Auth API  
-      summary: Register a new user
-      description: >-
-        The API endpoint register a new user and returns.
+      tags:
+        - Auth
+      summary: Register
+      description: >
+
+        This endpoint allows you to register a new user. 
+
+        ### Request Body
+
+        - **username** (string, required): The username of the user.
+
+        - **email** (string, required): The email address of the user.
+
+        - **password** (string, required): The password for the user account.
+
+
+        ### Response
+
+        - **statusCode** (number): A code indicating the status of the request.
+
+        - **data** (object): An object containing user details such as _id,
+        username, email, createdAt, updatedAt, and avatar.
+
+        - **message** (string): A message related to the request.
+
+        - **success** (boolean): Indicates whether the request was successful.
+
+
+        Example:
+
+        ```json
+
+        {
+            "statusCode": 0,
+            "data": {
+                "_id": "",
+                "username": "",
+                "email": "",
+                "createdAt": "",
+                "updatedAt": "",
+                "avatar": ""
+            },
+            "message": "",
+            "success": true
+        }
       requestBody:
-        '200':
-  
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                username: example
+                email: example@email.com
+                password: password
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /user/login:
+    post:
+      tags:
+        - Auth
+      summary: Login
+      description: >-
+        This endpoint allows the user to log in by sending a POST request to the
+        specified URL. The request should include the user's email and password
+        in the request body. Upon successful execution, the server will respond
+        with a status code of 200 and a JSON object containing the user's
+        information, access tokens, and a success message.
+
+
+        ### Request Body
+
+
+        - email (string): The user's email.
+
+        - password (string): The user's password.
+            
+
+        ### Response
+
+
+        - statusCode (integer): Indicates the status of the response.
+
+        - data (object): Contains the user's information, access tokens, and
+        other details.
+            - _id (string): User's ID.
+            - username (string): User's username.
+            - email (string): User's email.
+            - avatar (string): URL of the user's avatar.
+            - accessToken (string): Access token for authentication.
+            - refreshToken (string): Refresh token for authentication.
+        - message (string): Any additional message from the server.
+
+        - success (boolean): Indicates the success status of the request.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: example@email.com
+                password: password
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /user/logout:
+    post:
+      tags:
+        - Auth
+      summary: Logout
+      description: >-
+        This endpoint is used to log out the user. Upon successful execution, it
+        returns a status code of 200 with a JSON response containing the
+        statusCode, data, message, and success fields.
+
+
+        The request payload for this endpoint does not require any specific
+        parameters.
+
+
+        The response will include the following fields:
+
+
+        - statusCode: A code indicating the status of the operation.
+
+        - data: Additional data related to the operation.
+
+        - message: A message providing information about the operation.
+
+        - success: A boolean value indicating the success of the operation.
+      requestBody:
+        content: {}
+      parameters:
+        - name: Cache-Control
+          in: header
+          schema:
+            type: string
+          example: no-cache
+        - name: Postman-Token
+          in: header
+          schema:
+            type: string
+          example: <calculated when request is sent>
+        - name: Content-Length
+          in: header
+          schema:
+            type: integer
+          example: "0"
+        - name: Host
+          in: header
+          schema:
+            type: string
+          example: <calculated when request is sent>
+        - name: User-Agent
+          in: header
+          schema:
+            type: number
+          example: PostmanRuntime/7.32.1
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: "*/*"
+        - name: Accept-Encoding
+          in: header
+          schema:
+            type: string
+          example: gzip, deflate, br
+        - name: Connection
+          in: header
+          schema:
+            type: string
+          example: keep-alive
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{access_token}}
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /user/refresh:
+    post:
+      tags:
+        - Auth
+      summary: Refresh
+      description: >-
+        ### User Refresh
+
+
+        The `User Refresh` endpoint is a POST request that allows users to
+        refresh their access token using a refresh token.
+
+
+        #### Request Body
+
+
+        - `refresh` (string, required): The refresh token used to obtain a new
+        access token.
+            
+
+        Example:
+
+
+        ``` json
+
+        {
+            "refresh": "your_refresh_token"
+        }
+
+         ```
+
+        #### Response
+
+
+        - `statusCode` (integer): The status code of the response.
+
+        - `data` (object): An object containing the new `accessToken` and
+        `refreshToken`.
+            - `accessToken` (string): The new access token.
+            - `refreshToken` (string): The new refresh token.
+        - `message` (string): A message related to the response.
+
+        - `success` (boolean): Indicates if the request was successful.
+            
+
+        Example:
+
+
+        ``` json
+
+        {
+            "statusCode": 0,
+            "data": {
+                "accessToken": "new_access_token",
+                "refreshToken": "new_refresh_token"
+            },
+            "message": "",
+            "success": true
+        }
+
+         ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                refresh: "{{refresh_token}}"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /user/info:
+    get:
+      tags:
+        - Auth
+      summary: User Data
+      description: |-
+        This endpoint allows you to retrieve user information.
+
+        No request body is required for this GET request.
+
+        ### Response
+
+        - Status: 200
+        - Body:
+            
+            ``` json
+              {
+                  "statusCode": 0,
+                  "data": {
+                      "_id": "",
+                      "username": "",
+                      "email": "",
+                      "createdAt": "",
+                      "updatedAt": "",
+                      "avatar": ""
+                  },
+                  "message": "",
+                  "success": true
+              }
+            
+             ```
+            
+              
+            The response contains the user information including the user ID, username, email, creation and update timestamps, and avatar.
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{access_token}}
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /user/profile-upload-url:
+    post:
+      tags:
+        - Auth
+      summary: Profile Upload Url
+      description: >-
+        This API endpoint allows users to obtain a pre-signed URL for uploading
+        their profile image.
+
+
+        ### Request
+
+
+        The request should be sent via an HTTP POST method to
+        `{{url}}/user/profile-upload-url`. The request body should be in raw
+        format with the following parameters:
+
+
+        - `filename` (string): The name of the file to be uploaded.
+
+        - `contentType` (string): The content type of the file.
+            
+
+        ### Response
+
+
+        Upon a successful execution with a status code of 200, the API will
+        respond with the following data:
+
+
+        - `statusCode` (integer): Indicates the status of the request.
+
+        - `data` (object): Contains the pre-signed URL and related information
+        for uploading the profile image.
+            - `url` (string): The pre-signed URL for uploading the file.
+            - `key` (string): The key associated with the uploaded file.
+            - `contentType` (string): The content type of the file.
+        - `message` (string): Additional information or messages related to the
+        request.
+
+        - `success` (boolean): Indicates the success status of the request.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                filename: my-profile-pic.png
+                contentType: image/png
+      parameters:
+        - name: Cache-Control
+          in: header
+          schema:
+            type: string
+          example: no-cache
+        - name: Postman-Token
+          in: header
+          schema:
+            type: string
+          example: <calculated when request is sent>
+        - name: Host
+          in: header
+          schema:
+            type: string
+          example: <calculated when request is sent>
+        - name: User-Agent
+          in: header
+          schema:
+            type: number
+          example: PostmanRuntime/7.32.1
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: "*/*"
+        - name: Accept-Encoding
+          in: header
+          schema:
+            type: string
+          example: gzip, deflate, br
+        - name: Connection
+          in: header
+          schema:
+            type: string
+          example: keep-alive
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{access_token}}
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /document/create:
+    post:
+      tags:
+        - Document
+      summary: Create Document
+      description: >-
+        This endpoint makes an HTTP POST request to create a new document. The
+        request should include a JSON payload in the raw request body type with
+        a "title" field.
+
+
+        The response will have a status code of 200 and will include a JSON
+        object with a "statusCode", "data", "message", and "success" field. The
+        "data" field will contain the details of the newly created document,
+        including the "title", "content", "createdBy", "_id", "createdAt",
+        "updatedAt", and "__v" fields.
+
+
+        Example request payload:
+
+
+        ``` json
+
+        {
+            "title": "new-document-file-name"
+        }
+
+         ```
+
+        Example response:
+
+
+        ``` json
+
+        {
+            "statusCode": 0,
+            "data": {
+                "title": "",
+                "content": [],
+                "createdBy": "",
+                "_id": "",
+                "createdAt": "",
+                "updatedAt": "",
+                "__v": 0
+            },
+            "message": "",
+            "success": true
+        }
+
+         ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: new-doc
+      parameters:
+        - name: Cache-Control
+          in: header
+          schema:
+            type: string
+          example: no-cache
+        - name: Postman-Token
+          in: header
+          schema:
+            type: string
+          example: <calculated when request is sent>
+        - name: Host
+          in: header
+          schema:
+            type: string
+          example: <calculated when request is sent>
+        - name: User-Agent
+          in: header
+          schema:
+            type: number
+          example: PostmanRuntime/7.32.1
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: "*/*"
+        - name: Accept-Encoding
+          in: header
+          schema:
+            type: string
+          example: gzip, deflate, br
+        - name: Connection
+          in: header
+          schema:
+            type: string
+          example: keep-alive
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{access_token}}
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /document/me:
+    get:
+      tags:
+        - Document
+      summary: Get All Documents
+      description: >-
+        This endpoint makes an HTTP GET request to retrieve the document details
+        for the current user. The request does not contain a request body.
+
+
+        ### Response
+
+
+        - Status: 200
+
+        - Body:
+            
+            ``` json
+            {
+                "statusCode": 0,
+                "data": {
+                    "docs": [
+                        {
+                            "_id": "",
+                            "title": "",
+                            "createdBy": "",
+                            "createdAt": "",
+                            "updatedAt": "",
+                            "__v": 0
+                        }
+                    ]
+                },
+                "message": "",
+                "success": true
+            }
+            
+             ```
+            
+              
+            The response contains a success status along with an array of document details including ID, title, creator, creation and update timestamps.
+      parameters:
+        - name: Cache-Control
+          in: header
+          schema:
+            type: string
+          example: no-cache
+        - name: Postman-Token
+          in: header
+          schema:
+            type: string
+          example: <calculated when request is sent>
+        - name: Host
+          in: header
+          schema:
+            type: string
+          example: <calculated when request is sent>
+        - name: User-Agent
+          in: header
+          schema:
+            type: number
+          example: PostmanRuntime/7.32.1
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: "*/*"
+        - name: Accept-Encoding
+          in: header
+          schema:
+            type: string
+          example: gzip, deflate, br
+        - name: Connection
+          in: header
+          schema:
+            type: string
+          example: keep-alive
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{access_token}}
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /docs/{id}:
+    get:
+      tags:
+        - Docs
+      summary: Get Document By ID
+      description: >-
+        This endpoint makes an HTTP GET request to retrieve documentation by ID
+        from the specified URL. The request does not include a request body.
+
+
+        ### Response
+
+
+        - Status: 200
+
+        - Body:
+            
+            ``` json
+            {
+              "statusCode": 0,
+              "data": {
+                "_id": "",
+                "title": "",
+                "content": [],
+                "createdBy": "",
+                "createdAt": "",
+                "updatedAt": "",
+                "__v": 0
+              },
+              "message": "",
+              "success": true
+            }
+            
+             ```
+            
+              
+            The response returns a status code of 200 along with the retrieved documentation data, including ID, title, content, creator information, and timestamps. The "success" field indicates the success status of the request.
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{access_token}}
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 6597c94c2261db975cf6a455
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Docs
+      summary: Delete Document By ID
+      description: >-
+        This endpoint sends an HTTP DELETE request to delete a specific document
+        identified by its ID. The request does not include a request body.
+
+
+        The response to the last call had a status code of 200, and the body
+        contained a JSON object with the following properties:
+
+
+        - statusCode (number): The status code of the response.
+
+        - data (string): The data related to the deletion operation.
+
+        - message (string): A message related to the deletion operation.
+
+        - success (boolean): Indicates whether the deletion was successful.
+            
+
+        Example response:
+
+
+        ``` json
+
+        {
+            "statusCode": 0,
+            "data": "",
+            "message": "",
+            "success": true
+        }
+
+         ```
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{access_token}}
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 6597c94c2261db975cf6a455
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /docs/title:
+    post:
+      tags:
+        - Docs
+      summary: Update Document Title
+      description: >-
+        This endpoint allows you to add documentation by making an HTTP POST
+        request to {{url}}/docs/title.
+
+
+        ### Request Body
+
+
+        The request should include the following payload in raw JSON format:
+
+
+        - `title`: (string) The title of the document.
+
+        - `documentId`: (string) The ID of the document.
+            
+
+        ### Response
+
+
+        Upon a successful execution (Status: 200), the response will contain:
+
+
+        - `statusCode`: (number) Indicates the status of the response.
+
+        - `data`: (object) Contains the details of the added document, including
+        ID, title, content, creator, creation and update timestamps, and
+        version.
+
+        - `message`: (string) A message related to the response.
+
+        - `success`: (boolean) Indicates the success status of the operation.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: new-file-name
+                documentId: 6597cf2af6b85ff587863a54
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{access_token}}
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /health:
+    get:
+      tags:
+        - Health
+      summary: health check
+      description: >-
+        This endpoint makes an HTTP GET request to the specified URL followed by
+        /health. The request does not include a request body.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}

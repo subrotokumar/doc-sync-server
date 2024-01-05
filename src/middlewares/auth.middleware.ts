@@ -11,7 +11,7 @@ export interface AuthorizedRequest extends Request {
 export const authMiddleware = asyncHandler(
     async (req: AuthorizedRequest, _: Response, next: NextFunction,) => {
         try {
-            const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "")
+            const token = req.cookies?.accessToken || req.header("Authorization")?.split(' ')[1]
             if (!token) {
                 throw new ApiError(401, "Unauthorized Request")
             }

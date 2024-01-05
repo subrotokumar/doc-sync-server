@@ -94,6 +94,9 @@ devDependencies:
   '@types/response-time':
     specifier: ^2.3.8
     version: 2.3.8
+  '@types/swagger-jsdoc':
+    specifier: ^6.0.4
+    version: 6.0.4
   '@types/swagger-ui-express':
     specifier: ^4.1.6
     version: 4.1.6
@@ -1512,6 +1515,10 @@ packages:
       '@types/http-errors': 2.0.4
       '@types/mime': 3.0.4
       '@types/node': 20.10.5
+    dev: true
+
+  /@types/swagger-jsdoc@6.0.4:
+    resolution: {integrity: sha512-W+Xw5epcOZrF/AooUM/PccNMSAFOKWZA5dasNyMujTwsBkU74njSJBpvCCJhHAJ95XRMzQrrW844Btu0uoetwQ==}
     dev: true
 
   /@types/swagger-ui-express@4.1.6:

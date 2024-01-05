@@ -21,6 +21,7 @@
     "@types/node": "^20.10.5",
     "@types/request-ip": "^0.0.41",
     "@types/response-time": "^2.3.8",
+    "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.6",
     "prettier": "^3.1.1",
     "tsc-watch": "^6.0.4",
